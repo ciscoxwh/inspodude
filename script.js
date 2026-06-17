@@ -1,5 +1,6 @@
 const bedImage = document.getElementById('bedImage');
 const lilguy = document.getElementById('lilguy');
+const zzzs = [document.getElementById('z1'), document.getElementById('z2'), document.getElementById('z3')];
 const dialogueText = document.getElementById('dialogueText');
 const buttonArea = document.getElementById('buttonArea');
 
@@ -147,40 +148,95 @@ const nodes = {
   }
 };
 
+var lastImageState = null;
+
 function setImage(state) {
+  if (lastImageState === 'sleeping' && state !== 'sleeping') {
+    zzzs.forEach(function(z) {
+      z.classList.add('waking');
+      z.addEventListener('animationend', function handler() {
+        z.style.display = 'none';
+        z.classList.remove('waking');
+        z.removeEventListener('animationend', handler);
+      });
+    });
+  } else {
+    zzzs.forEach(function(z) {
+      z.style.display = state === 'sleeping' ? 'block' : 'none';
+      z.classList.remove('waking');
+    });
+  }
+  lastImageState = state;
+
   if (state === 'sleeping') {
-    bedImage.src = 'bed_lilguy.PNG';
+    bedImage.src = 'bed_lilguy.png';
     lilguy.style.display = 'none';
   } else if (state === 'gone') {
-    bedImage.src = 'bed.PNG';
+    bedImage.src = 'bed.png';
     lilguy.style.display = 'none';
   } else {
-    bedImage.src = 'bed.PNG';
+    bedImage.src = 'bed.png';
     lilguy.style.display = 'block';
-    if (state === 'happy') lilguy.src = 'lilguy_happy.PNG';
-    else if (state === 'surprised') lilguy.src = 'lilguy_surprised.PNG';
-    else lilguy.src = 'lilguy_inquisitive.PNG';
+    if (state === 'happy') lilguy.src = 'lilguy_happy.png';
+    else if (state === 'surprised') lilguy.src = 'lilguy_surprised.png';
+    else lilguy.src = 'lilguy_inquisitive.png';
   }
 }
 
-function renderButtons(choices) {
+var visited = {};
+
+function leavesOfNode(nodeId) {
+  var node = nodes[nodeId];
+  if (!node.choices || node.choices.length === 0) return [nodeId];
+  var leaves = [];
+  node.choices.forEach(function(choice) {
+    leaves = leaves.concat(leavesOfChoice(nodeId, choice));
+  });
+  return leaves;
+}
+
+function leavesOfChoice(nodeId, choice) {
+  if (choice.response) return [nodeId + '|' + choice.label];
+  return leavesOfNode(choice.next);
+}
+
+function isExhausted(nodeId, choice) {
+  return leavesOfChoice(nodeId, choice).every(function(leafKey) {
+    return visited[leafKey];
+  });
+}
+
+function renderButtons(nodeId, choices) {
   buttonArea.innerHTML = '';
   choices.forEach(function(choice) {
     var btn = document.createElement('button');
-    btn.textContent = choice.label;
+    var label = document.createElement('span');
+    label.className = 'btn-label';
+    label.textContent = choice.label;
+    btn.appendChild(label);
+    if (isExhausted(nodeId, choice)) {
+      btn.classList.add('visited');
+    } else {
+      btn.style.setProperty('--jiggle-delay', (-(Math.random() * 0.25)) + 's');
+      btn.classList.add('entering');
+      btn.addEventListener('animationend', function(e) {
+        if (e.animationName === 'jiggle-enter') btn.classList.remove('entering');
+      });
+    }
     btn.addEventListener('click', (function(c) {
-      return function() { handleChoice(c); };
+      return function() { handleChoice(nodeId, c); };
     })(choice));
     buttonArea.appendChild(btn);
   });
 }
 
-function handleChoice(choice) {
+function handleChoice(nodeId, choice) {
   if (choice.response) {
+    visited[nodeId + '|' + choice.label] = true;
     var dest = nodes[choice.next];
     dialogueText.textContent = choice.response;
     setImage(dest.image);
-    renderButtons(dest.choices);
+    renderButtons(choice.next, dest.choices);
   } else {
     showNode(choice.next);
   }
@@ -188,9 +244,10 @@ function handleChoice(choice) {
 
 function showNode(id) {
   var node = nodes[id];
+  if (!node.choices || node.choices.length === 0) visited[id] = true;
   dialogueText.innerHTML = node.text.replace(/\n/g, '<br>');
   setImage(node.image);
-  renderButtons(node.choices);
+  renderButtons(id, node.choices);
 }
 
 showNode('00');
