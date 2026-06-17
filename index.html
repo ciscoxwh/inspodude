@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inspodude</title>
+    <style>
+      body {
+        background: #fff;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .scene {
+        position: relative;
+      }
+
+      .image-area {
+        margin-bottom: 20px;
+      }
+
+      .dialogue {
+        max-width: 66.67vw;
+        margin: 0 auto;
+        line-height: 1.4em;
+      }
+
+      .response {
+        text-indent: 2em;
+        margin: 0;
+      }
+
+      .quote {
+        text-indent: 4em;
+        margin: 0;
+        font-weight: bold; /* Make the quote bold */
+      }
+
+      .buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        white-space: nowrap;
+      }
+
+      button {
+        background: lightpink;
+        border: 10px;
+        color: #fff;
+        padding: 30px 15px;
+        cursor: pointer;
+        border-radius: 20px;
+        font-size: 1em;
+      }
+
+      button:hover {
+        background: darkpink;
+      }
+
+      .lilguy {
+        position: absolute;
+        top: 0;
+        right: -150px;
+      }
+
+      img {
+        max-width: 30vw; /* adjust this value as needed */
+        height: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="scene">
+        <img id="bedImage" src="bed_lilguy.png" alt="Inspodude in bed" />
+        <img id="lilguy" class="lilguy" src="" alt="" style="display: none" />
+      </div>
+      <div class="dialogue" id="dialogueText"></div>
+      <div class="buttons" id="buttonArea">
+        <button id="wakeButton">Wake lil guy</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
