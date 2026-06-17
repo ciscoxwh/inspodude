@@ -85,7 +85,7 @@ const nodes = {
     ]
   },
   '10': {
-    text: "yup. it was a beautiful two months. we met at the shelter. she was a rare female orange tabby cat... she had the funniest humor. publicly our Shelterpedia pages cite 'irreconcilable differences' of course... we were a sort of a-list couple. but, just between us, bud - she said we just didn't 'click' anymore. she wanted a wild man. not a simple man like me. i wasn't funny, witty and feral like that calico in the enclosure over. they'd talk into the night. sneak out and hunt fish in the mornings by the creek down the road.",
+    text: "yup. it was a beautiful two months. we met at the shelter. she was a rare female orange tabby cat... she had the funniest humor. publicly our Shelterpedia pages cite 'irreconcilable differences' of course... we were sort of an a-list couple. but, just between us, bud - she said we just didn't 'click' anymore. she wanted a wild man. not a simple man like me. i wasn't funny, witty and feral like that calico in the enclosure over. they'd talk into the night. sneak out and hunt fish in the mornings by the creek down the road.",
     image: 'happy',
     choices: [
       { label: "dude. that's insane. go on.", next: '11' },
