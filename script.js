@@ -169,17 +169,17 @@ function setImage(state) {
   lastImageState = state;
 
   if (state === 'sleeping') {
-    bedImage.src = 'bed_lilguy.png';
+    bedImage.src = 'bed_lilguy.webp';
     lilguy.style.display = 'none';
   } else if (state === 'gone') {
-    bedImage.src = 'bed.png';
+    bedImage.src = 'bed.webp';
     lilguy.style.display = 'none';
   } else {
-    bedImage.src = 'bed.png';
+    bedImage.src = 'bed.webp';
     lilguy.style.display = 'block';
-    if (state === 'happy') lilguy.src = 'lilguy_happy.png';
-    else if (state === 'surprised') lilguy.src = 'lilguy_surprised.png';
-    else lilguy.src = 'lilguy_inquisitive.png';
+    if (state === 'happy') lilguy.src = 'lilguy_happy.webp';
+    else if (state === 'surprised') lilguy.src = 'lilguy_surprised.webp';
+    else lilguy.src = 'lilguy_inquisitive.webp';
   }
 }
 
